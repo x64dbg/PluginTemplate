@@ -965,7 +965,9 @@ typedef enum
     GUI_ADD_FAVOURITE_COMMAND,      // param1=const char* command   param2=const char* shortcut
     GUI_SET_FAVOURITE_TOOL_SHORTCUT,// param1=const char* name      param2=const char* shortcut
     GUI_FOLD_DISASSEMBLY,           // param1=duint startAddress    param2=duint length
-    GUI_SELECT_IN_MEMORY_MAP        // param1=duint addr,           param2=unused
+    GUI_SELECT_IN_MEMORY_MAP,       // param1=duint addr,           param2=unused
+    GUI_GET_ACTIVE_VIEW,            // param1=ACTIVEVIEW*,          param2=unused
+    GUI_MENU_SET_ENTRY_CHECKED      // param1=int hEntry,           param2=bool checked
 } GUIMSG;
 
 //GUI Typedefs
@@ -1000,6 +1002,14 @@ typedef struct
     GUISCRIPTEXECUTE execute;
     GUISCRIPTCOMPLETER completeCommand;
 } SCRIPTTYPEINFO;
+
+typedef struct
+{
+    void* titleHwnd;
+    void* classHwnd;
+    char title[MAX_STRING_SIZE];
+    char className[MAX_STRING_SIZE];
+} ACTIVEVIEW;
 
 //GUI functions
 //code page is utf8
@@ -1068,6 +1078,7 @@ BRIDGE_IMPEXP void GuiUpdateSEHChain();
 BRIDGE_IMPEXP void GuiLoadSourceFile(const char* path, int line);
 BRIDGE_IMPEXP void GuiMenuSetIcon(int hMenu, const ICONDATA* icon);
 BRIDGE_IMPEXP void GuiMenuSetEntryIcon(int hEntry, const ICONDATA* icon);
+BRIDGE_IMPEXP void GuiMenuSetEntryChecked(int hEntry, bool checked);
 BRIDGE_IMPEXP void GuiShowCpu();
 BRIDGE_IMPEXP void GuiAddQWidgetTab(void* qWidget);
 BRIDGE_IMPEXP void GuiShowQWidgetTab(void* qWidget);
@@ -1097,6 +1108,7 @@ BRIDGE_IMPEXP void GuiAddFavouriteCommand(const char* name, const char* shortcut
 BRIDGE_IMPEXP void GuiSetFavouriteToolShortcut(const char* name, const char* shortcut);
 BRIDGE_IMPEXP void GuiFoldDisassembly(duint startAddress, duint length);
 BRIDGE_IMPEXP void GuiSelectInMemoryMap(duint addr);
+BRIDGE_IMPEXP void GuiGetActiveView(ACTIVEVIEW* activeView);
 
 #ifdef __cplusplus
 }
