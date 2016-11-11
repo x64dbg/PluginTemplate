@@ -228,7 +228,8 @@ typedef enum
     DBG_ARGUMENT_OVERLAPS,          // param1=FUNCTION* info,            param2=unused
     DBG_ARGUMENT_ADD,               // param1=FUNCTION* info,            param2=unused
     DBG_ARGUMENT_DEL,               // param1=FUNCTION* info,            param2=unused
-    DBG_GET_WATCH_LIST              // param1=ListOf(WATCHINFO),         param2=unused
+    DBG_GET_WATCH_LIST,             // param1=ListOf(WATCHINFO),         param2=unused
+    DBG_SELCHANGED                  // param1=hWindow,                   param2=VA
 } DBGMSG;
 
 typedef enum
@@ -766,8 +767,8 @@ typedef struct
 //Debugger functions
 BRIDGE_IMPEXP const char* DbgInit();
 BRIDGE_IMPEXP void DbgExit();
-BRIDGE_IMPEXP bool DbgMemRead(duint va, unsigned char* dest, duint size);
-BRIDGE_IMPEXP bool DbgMemWrite(duint va, const unsigned char* src, duint size);
+BRIDGE_IMPEXP bool DbgMemRead(duint va, void* dest, duint size);
+BRIDGE_IMPEXP bool DbgMemWrite(duint va, const void* src, duint size);
 BRIDGE_IMPEXP duint DbgMemGetPageSize(duint base);
 BRIDGE_IMPEXP duint DbgMemFindBaseAddr(duint addr, duint* size);
 BRIDGE_IMPEXP bool DbgCmdExec(const char* cmd);
@@ -858,6 +859,7 @@ BRIDGE_IMPEXP bool DbgSetEncodeType(duint addr, duint size, ENCODETYPE type);
 BRIDGE_IMPEXP void DbgDelEncodeTypeRange(duint start, duint end);
 BRIDGE_IMPEXP void DbgDelEncodeTypeSegment(duint start);
 BRIDGE_IMPEXP bool DbgGetWatchList(ListOf(WATCHINFO) list);
+BRIDGE_IMPEXP void DbgSelChanged(int hWindow, duint VA);
 
 //Gui defines
 #define GUI_PLUGIN_MENU 0
@@ -967,7 +969,9 @@ typedef enum
     GUI_FOLD_DISASSEMBLY,           // param1=duint startAddress    param2=duint length
     GUI_SELECT_IN_MEMORY_MAP,       // param1=duint addr,           param2=unused
     GUI_GET_ACTIVE_VIEW,            // param1=ACTIVEVIEW*,          param2=unused
-    GUI_MENU_SET_ENTRY_CHECKED      // param1=int hEntry,           param2=bool checked
+    GUI_MENU_SET_ENTRY_CHECKED,     // param1=int hEntry,           param2=bool checked
+    GUI_ADD_INFO_LINE,              // param1=const char* infoline, param2=unused
+    GUI_PROCESS_EVENTS,             // param1=unused,               param2=unused
 } GUIMSG;
 
 //GUI Typedefs
@@ -1099,7 +1103,7 @@ BRIDGE_IMPEXP bool GuiIsUpdateDisabled();
 BRIDGE_IMPEXP void GuiUpdateEnable(bool updateNow);
 BRIDGE_IMPEXP void GuiUpdateDisable();
 BRIDGE_IMPEXP void GuiLoadGraph(BridgeCFGraphList* graph, duint addr);
-BRIDGE_IMPEXP bool GuiGraphAt(duint addr);
+BRIDGE_IMPEXP duint GuiGraphAt(duint addr);
 BRIDGE_IMPEXP void GuiUpdateGraphView();
 BRIDGE_IMPEXP void GuiDisableLog();
 BRIDGE_IMPEXP void GuiEnableLog();
@@ -1109,6 +1113,8 @@ BRIDGE_IMPEXP void GuiSetFavouriteToolShortcut(const char* name, const char* sho
 BRIDGE_IMPEXP void GuiFoldDisassembly(duint startAddress, duint length);
 BRIDGE_IMPEXP void GuiSelectInMemoryMap(duint addr);
 BRIDGE_IMPEXP void GuiGetActiveView(ACTIVEVIEW* activeView);
+BRIDGE_IMPEXP void GuiAddInfoLine(const char* infoLine);
+BRIDGE_IMPEXP void GuiProcessEvents();
 
 #ifdef __cplusplus
 }
