@@ -2,7 +2,9 @@ bin/
 Release/
 Debug/
 x64/
+.vs/
 *.sdf
 *.opensdf
 *.suo
 *.vcxproj.user
+*.VC.*db
