@@ -12,7 +12,7 @@ static void Adler32Menu(int hWindow)
 {
     if(!DbgIsDebugging())
     {
-        _plugin_logputs("[" PLUGIN_NAME "] You need to be debugging to use this command");
+        dputs("You need to be debugging to use this command");
         return;
     }
     SELECTIONDATA sel;
@@ -29,20 +29,20 @@ static void Adler32Menu(int hWindow)
         }
         delete[] data;
         DWORD checksum = (b << 16) | a;
-        _plugin_logprintf("[" PLUGIN_NAME "] Adler32 of %p[%X] is: %08X\n", sel.start, len, checksum);
+        dprintf("Adler32 of %p[%X] is: %08X\n", sel.start, len, checksum);
     }
     else
-        _plugin_logputs("[" PLUGIN_NAME "] DbgMemRead failed...");
+        dputs("DbgMemRead failed...");
 }
 
 static bool cbTestCommand(int argc, char* argv[])
 {
-    _plugin_logputs("[" PLUGIN_NAME "] Test command!");
+    dputs("Test command!");
     char line[GUI_MAX_LINE_SIZE] = "";
     if(!GuiGetLineWindow("test", line))
-        _plugin_logputs("[" PLUGIN_NAME "] Cancel pressed!");
+        dputs("Cancel pressed!");
     else
-        _plugin_logprintf("[" PLUGIN_NAME "] Line: \"%s\"\n", line);
+        dprintf("Line: \"%s\"\n", line);
     return true;
 }
 
@@ -53,24 +53,24 @@ static duint exprZero(int argc, duint* argv, void* userdata)
 
 PLUG_EXPORT void CBINITDEBUG(CBTYPE cbType, PLUG_CB_INITDEBUG* info)
 {
-    _plugin_logprintf("[" PLUGIN_NAME "] Debugging of %s started!\n", info->szFileName);
+    dprintf("Debugging of %s started!\n", info->szFileName);
 }
 
 PLUG_EXPORT void CBSTOPDEBUG(CBTYPE cbType, PLUG_CB_STOPDEBUG* info)
 {
-    _plugin_logputs("[" PLUGIN_NAME "] Debugging stopped!");
+    dputs("Debugging stopped!");
 }
 
 PLUG_EXPORT void CBEXCEPTION(CBTYPE cbType, PLUG_CB_EXCEPTION* info)
 {
-    _plugin_logprintf("[" PLUGIN_NAME "] ExceptionRecord.ExceptionCode: %08X\n", info->Exception->ExceptionRecord.ExceptionCode);
+    dprintf("ExceptionRecord.ExceptionCode: %08X\n", info->Exception->ExceptionRecord.ExceptionCode);
 }
 
 PLUG_EXPORT void CBDEBUGEVENT(CBTYPE cbType, PLUG_CB_DEBUGEVENT* info)
 {
     if(info->DebugEvent->dwDebugEventCode == EXCEPTION_DEBUG_EVENT)
     {
-        _plugin_logprintf("[" PLUGIN_NAME "] DebugEvent->EXCEPTION_DEBUG_EVENT->%.8X\n", info->DebugEvent->u.Exception.ExceptionRecord.ExceptionCode);
+        dprintf("DebugEvent->EXCEPTION_DEBUG_EVENT->%.8X\n", info->DebugEvent->u.Exception.ExceptionRecord.ExceptionCode);
     }
 }
 
@@ -102,24 +102,14 @@ PLUG_EXPORT void CBMENUENTRY(CBTYPE cbType, PLUG_CB_MENUENTRY* info)
 //Initialize your plugin data here.
 bool pluginInit(PLUG_INITSTRUCT* initStruct)
 {
-    if(!_plugin_registercommand(pluginHandle, PLUGIN_NAME, cbTestCommand, false))
-        _plugin_logputs("[" PLUGIN_NAME "] Error registering the \"" PLUGIN_NAME "\" command!");
-
-    if(!_plugin_registerexprfunction(pluginHandle, PLUGIN_NAME ".zero", 0, exprZero, nullptr))
-        _plugin_logputs("[" PLUGIN_NAME "] Error registering the \"" PLUGIN_NAME ".zero\" expression function!");
-
+    _plugin_registercommand(pluginHandle, PLUGIN_NAME, cbTestCommand, false);
+    _plugin_registerexprfunction(pluginHandle, PLUGIN_NAME ".zero", 0, exprZero, nullptr);
     return true; //Return false to cancel loading the plugin.
 }
 
-//Deinitialize your plugin data here (clearing menus optional).
-bool pluginStop()
+//Deinitialize your plugin data here.
+void pluginStop()
 {
-    _plugin_unregistercommand(pluginHandle, PLUGIN_NAME);
-    _plugin_menuclear(hMenu);
-    _plugin_menuclear(hMenuDisasm);
-    _plugin_menuclear(hMenuDump);
-    _plugin_menuclear(hMenuStack);
-    return true;
 }
 
 //Do GUI/Menu related things here.

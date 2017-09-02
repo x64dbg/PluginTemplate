@@ -8,5 +8,5 @@
 
 //functions
 bool pluginInit(PLUG_INITSTRUCT* initStruct);
-bool pluginStop();
+void pluginStop();
 void pluginSetup();

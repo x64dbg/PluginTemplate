@@ -10,15 +10,13 @@ static duint cbExpr(int argc, duint* argv, void* userdata)
 //Initialize your plugin data here.
 bool pluginInit(PLUG_INITSTRUCT* initStruct)
 {
-    if(!_plugin_registerexprfunction(pluginHandle, PLUGIN_NAME, 2, cbExpr, nullptr))
-        _plugin_logputs("[" PLUGIN_NAME "] Error registering the \"" PLUGIN_NAME "\" expression function!");
+    _plugin_registerexprfunction(pluginHandle, PLUGIN_NAME, 2, cbExpr, nullptr);
     return true; //Return false to cancel loading the plugin.
 }
 
-//Deinitialize your plugin data here (clearing menus optional).
-bool pluginStop()
+//Deinitialize your plugin data here.
+void pluginStop()
 {
-    return true;
 }
 
 //Do GUI/Menu related things here.

@@ -97,6 +97,9 @@
       <ProjectItem ReplaceParameters="false" TargetFileName="threading.h">PLUGINSDK\YARA\YARA\threading.h</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="types.h">PLUGINSDK\YARA\YARA\types.h</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="utils.h">PLUGINSDK\YARA\YARA\utils.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="dotnet.h">PLUGINSDK\YARA\YARA\dotnet.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="endian.h">PLUGINSDK\YARA\YARA\endian.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="pe_utils.h">PLUGINSDK\YARA\YARA\pe_utils.h</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="x32bridge.lib">PLUGINSDK\x32bridge.lib</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="x32dbg.lib">PLUGINSDK\x32dbg.lib</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="x64bridge.lib">PLUGINSDK\x64bridge.lib</ProjectItem>

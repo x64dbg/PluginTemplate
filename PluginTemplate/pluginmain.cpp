@@ -19,7 +19,8 @@ PLUG_EXPORT bool pluginit(PLUG_INITSTRUCT* initStruct)
 
 PLUG_EXPORT bool plugstop()
 {
-    return pluginStop();
+    pluginStop();
+    return true;
 }
 
 PLUG_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct)
@@ -30,13 +31,4 @@ PLUG_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct)
     hMenuDump = setupStruct->hMenuDump;
     hMenuStack = setupStruct->hMenuStack;
     pluginSetup();
-}
-
-BOOL WINAPI DllMain(
-    _In_ HINSTANCE hinstDLL,
-    _In_ DWORD     fdwReason,
-    _In_ LPVOID    lpvReserved
-)
-{
-    return TRUE;
 }
