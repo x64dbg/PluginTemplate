@@ -1,10 +1,10 @@
 # PluginTemplate
 
-Plugin template for x64dbg.
+Plugin templates for x64dbg.
 
 ## Installation
 
-Grab the latest [release](https://github.com/x64dbg/PluginTemplate/releases/latest) and copy `PluginTemplate.zip` to `Documents\Visual Studio 2013\Templates\ProjectTemplates\Visual C++ Project\`
+Grab the latest [release](https://github.com/x64dbg/PluginTemplate/releases/latest) and copy `*.zip` to `Documents\Visual Studio 2013\Templates\ProjectTemplates\Visual C++ Project\`
 
 ## Building
 
