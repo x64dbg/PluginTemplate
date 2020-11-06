@@ -1,0 +1,4 @@
+#define PLUGIN_NAME "${PROJECT_NAME}"
+#ifndef PLUGIN_NAME
+#error PLUGIN_NAME not defined
+#endif // PLUGIN_NAME
