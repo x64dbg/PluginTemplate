@@ -12,7 +12,7 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "")
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
 
 # Plugin project
-project(MinimalPlugin)
+project(PluginTemplate)
 
 # Enable solution folder support
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
