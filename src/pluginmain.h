@@ -2,9 +2,7 @@
 
 // Plugin information
 #ifndef PLUGIN_NAME
-#include "pluginconfig.h"
-#else
-#define PLUGIN_NAME "UnnamedPlugin"
+#error You need to define PLUGIN_NAME
 #endif // PLUGIN_NAME
 #define PLUGIN_VERSION 1
 
