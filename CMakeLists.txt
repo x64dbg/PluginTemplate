@@ -3,6 +3,10 @@
 
 cmake_minimum_required(VERSION 3.15)
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+	message(FATAL_ERROR "In-tree builds are not supported. Run CMake from a separate directory: cmake -B build")
+endif()
+
 # Regenerate CMakeLists.txt automatically in the root project
 set(CMKR_ROOT_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
@@ -66,3 +70,4 @@ x64dbg_plugin(${CMKR_TARGET})
 
 unset(CMKR_TARGET)
 unset(CMKR_SOURCES)
+
