@@ -63,3 +63,5 @@ extern int hMenu;
 extern int hMenuDisasm;
 extern int hMenuDump;
 extern int hMenuStack;
+extern int hMenuMemmap;
+extern int hMenuSymmod;
