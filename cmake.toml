@@ -3,29 +3,24 @@ version = "3.15"
 cmkr-include = "cmake/cmkr.cmake"
 
 [project]
-cmake-before = """
-# Set up a more familiar Visual Studio configuration
-# Override these options with -DCMAKE_OPTION=Value
-#
-# See: https://cmake.org/cmake/help/latest/command/set.html#set-cache-entry
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "")
-set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/DEBUG:FULL /INCREMENTAL:NO" CACHE STRING "")
-set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "/DEBUG:FULL /INCREMENTAL:NO" CACHE STRING "")
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "")
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
-"""
 name = "PluginTemplate"
-include-after = [
-    "cmake/CPM.cmake",
-    "cmake/x64dbg.cmake",
+include-before = [
+	"cmake/msvc-static-runtime.cmake",
+	"cmake/msvc-configurations.cmake",
 ]
 
-[target.PluginTemplate]
+[fetch-content.x64dbg]
+url = "https://sourceforge.net/projects/x64dbg/files/snapshots/snapshot_2023-06-10_18-05.zip"
+sha1 = "04468bd61fb36d6b10d17f342f03ef12f5b2ce62"
+include-after = ["cmake/x64dbg.cmake"]
+
+[template.plugin]
 type = "shared"
+add-function = "x64dbg_plugin"
+
+[target.PluginTemplate]
+type = "plugin"
 sources = [
     "src/*.cpp",
     "src/*.h",
 ]
-cmake-after = """
-x64dbg_plugin(${CMKR_TARGET})
-"""

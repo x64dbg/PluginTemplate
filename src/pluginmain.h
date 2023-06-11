@@ -56,10 +56,13 @@
 #define dputs(x) _plugin_logprintf("[" PLUGIN_NAME "] %s\n", x)
 #define PLUG_EXPORT extern "C" __declspec(dllexport)
 
-//superglobal variables
+// Global variables required by some of the _plugin_xxx functions
 extern int pluginHandle;
 extern HWND hwndDlg;
 extern int hMenu;
 extern int hMenuDisasm;
 extern int hMenuDump;
 extern int hMenuStack;
+extern int hMenuGraph;
+extern int hMenuMemmap;
+extern int hMenuSymmod;
