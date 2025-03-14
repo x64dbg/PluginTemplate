@@ -9,6 +9,9 @@ include-before = [
 	"cmake/msvc-configurations.cmake",
 ]
 
+[find-package]
+Qt5 = { components = ["Widgets", "Network", "WinExtras"] }
+
 [fetch-content.x64dbg]
 url = "https://sourceforge.net/projects/x64dbg/files/snapshots/snapshot_2023-06-10_18-05.zip"
 sha1 = "04468bd61fb36d6b10d17f342f03ef12f5b2ce62"
@@ -23,4 +26,16 @@ type = "plugin"
 sources = [
     "src/*.cpp",
     "src/*.h",
+    "src/*.ui",
+    "src/*.qrc",
 ]
+link-libraries = [
+    "Qt5::Widgets",
+    "Qt5::Network",
+    "Qt5::WinExtras",
+]
+
+[target.PluginTemplate.properties]
+AUTOMOC = true
+AUTORCC = true
+AUTOUIC = true

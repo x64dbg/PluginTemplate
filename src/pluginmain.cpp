@@ -1,43 +1,47 @@
 #include "pluginmain.h"
-#include "plugin.h"
+#include "QtPlugin.h"
 
-// NOTE: This is mostly just boilerplate code, generally you work in plugin.cpp
-// Reference: https://help.x64dbg.com/en/latest/developers/plugins/basics.html#exports
+#define plugin_name "QtPlugin"
+#define plugin_version 1
 
-int pluginHandle;
-HWND hwndDlg;
-int hMenu;
-int hMenuDisasm;
-int hMenuDump;
-int hMenuStack;
-int hMenuGraph;
-int hMenuMemmap;
-int hMenuSymmod;
+int Plugin::handle;
+HWND Plugin::hwndDlg;
+int Plugin::hMenu;
+int Plugin::hMenuDisasm;
+int Plugin::hMenuDump;
+int Plugin::hMenuStack;
+int Plugin::hMenuGraph;
+int Plugin::hMenuMemmap;
+int Plugin::hMenuSymmod;
 
-PLUG_EXPORT bool pluginit(PLUG_INITSTRUCT* initStruct)
+extern "C" __declspec(dllexport) bool pluginit(PLUG_INITSTRUCT* initStruct)
 {
-    initStruct->pluginVersion = PLUGIN_VERSION;
+    initStruct->pluginVersion = plugin_version;
     initStruct->sdkVersion = PLUG_SDKVERSION;
-    strncpy_s(initStruct->pluginName, PLUGIN_NAME, _TRUNCATE);
-    pluginHandle = initStruct->pluginHandle;
-    return pluginInit(initStruct);
-}
+    strcpy_s(initStruct->pluginName, plugin_name);
 
-PLUG_EXPORT bool plugstop()
-{
-    pluginStop();
+    Plugin::handle = initStruct->pluginHandle;
+    QtPlugin::Init();
     return true;
 }
 
-PLUG_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct)
+extern "C" __declspec(dllexport) void plugsetup(PLUG_SETUPSTRUCT* setupStruct)
 {
-    hwndDlg = setupStruct->hwndDlg;
-    hMenu = setupStruct->hMenu;
-    hMenuDisasm = setupStruct->hMenuDisasm;
-    hMenuDump = setupStruct->hMenuDump;
-    hMenuStack = setupStruct->hMenuStack;
-    hMenuGraph = setupStruct->hMenuGraph;
-    hMenuMemmap = setupStruct->hMenuMemmap;
-    hMenuSymmod = setupStruct->hMenuSymmod;
-    pluginSetup();
+    Plugin::hwndDlg = setupStruct->hwndDlg;
+    Plugin::hMenu = setupStruct->hMenu;
+    Plugin::hMenuDisasm = setupStruct->hMenuDisasm;
+    Plugin::hMenuDump = setupStruct->hMenuDump;
+    Plugin::hMenuStack = setupStruct->hMenuStack;
+    Plugin::hMenuGraph = setupStruct->hMenuGraph;
+    Plugin::hMenuMemmap = setupStruct->hMenuMemmap;
+    Plugin::hMenuSymmod = setupStruct->hMenuSymmod;
+    GuiExecuteOnGuiThread(QtPlugin::Setup);
+    QtPlugin::WaitForSetup();
+}
+
+extern "C" __declspec(dllexport) bool plugstop()
+{
+    GuiExecuteOnGuiThread(QtPlugin::Stop);
+    QtPlugin::WaitForStop();
+    return true;
 }

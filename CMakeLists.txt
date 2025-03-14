@@ -21,13 +21,21 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 	# Create a configure-time dependency on cmake.toml to improve IDE support
-	configure_file(cmake.toml cmake.toml COPYONLY)
+	set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS cmake.toml)
 endif()
 
 include("cmake/msvc-static-runtime.cmake")
 include("cmake/msvc-configurations.cmake")
 
 project(PluginTemplate)
+
+# Packages
+find_package(Qt5 REQUIRED
+	COMPONENTS
+		Widgets
+		Network
+		WinExtras
+)
 
 include(FetchContent)
 
@@ -38,7 +46,7 @@ endif()
 message(STATUS "Fetching x64dbg...")
 FetchContent_Declare(x64dbg
 	URL
-		"https://downloads.sourceforge.net/project/x64dbg/snapshots/snapshot_2023-06-10_18-05.zip"
+		"https://sourceforge.net/projects/x64dbg/files/snapshots/snapshot_2023-06-10_18-05.zip"
 	URL_HASH
 		SHA1=04468bd61fb36d6b10d17f342f03ef12f5b2ce62
 )
@@ -48,11 +56,20 @@ include("cmake/x64dbg.cmake")
 
 # Target: PluginTemplate
 set(PluginTemplate_SOURCES
-	"src/plugin.cpp"
-	"src/pluginmain.cpp"
-	"src/plugin.h"
-	"src/pluginmain.h"
 	cmake.toml
+	"src/PluginDialog.cpp"
+	"src/PluginDialog.h"
+	"src/PluginDialog.ui"
+	"src/PluginMainWindow.cpp"
+	"src/PluginMainWindow.h"
+	"src/PluginMainWindow.ui"
+	"src/PluginTabWidget.cpp"
+	"src/PluginTabWidget.h"
+	"src/QtPlugin.cpp"
+	"src/QtPlugin.h"
+	"src/pluginmain.cpp"
+	"src/pluginmain.h"
+	"src/resource.qrc"
 )
 
 x64dbg_plugin(PluginTemplate)
@@ -60,3 +77,17 @@ x64dbg_plugin(PluginTemplate)
 target_sources(PluginTemplate PRIVATE ${PluginTemplate_SOURCES})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${PluginTemplate_SOURCES})
 
+target_link_libraries(PluginTemplate PUBLIC
+	Qt5::Widgets
+	Qt5::Network
+	Qt5::WinExtras
+)
+
+set_target_properties(PluginTemplate PROPERTIES
+	AUTOMOC
+		ON
+	AUTORCC
+		ON
+	AUTOUIC
+		ON
+)
